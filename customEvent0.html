@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h1>Event example</h1>
+            </div>
+            <div>
+                <input type="text" id='text1' class='form-control' placeholder="New Data">
+                <ul id='list'></ul>
+            </div>
+        </div>
+        <script>
+            var event=document.createEvent('Event');
+
+            // 'build'라는 이름의 이벤트 정의
+            event.initEvent('build', true, true);
+
+            // Listen for the event.
+            document.addEventListener('build', function(e){
+                // e.target matches document from above
+            }, false);
+
+            // 이벤트를 이벤트 수신 객체에 전달
+            document.dispatchEvent(event);
+
+            var input=document.getElementById('text1');
+            input.addEventListener('click', function(event){
+                // var evt=new Event('refresh');
+                // evt.data=input.value;
+                var evt=new CustomEvent('refresh', {detail:{name:'AAA', pw:'bbb'}});
+                list.dispatchEvent(evt);
+            }, false);
+            var list=document.getElementById('list');
+            list.addEventListener('refresh', function(event){
+                console.log('list... refresh');
+                // console.log(event.data);
+                console.log(event.detail);
+            }, false);
+        </script>
+    </body>
+</html>

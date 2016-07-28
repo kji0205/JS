@@ -1,0 +1,12 @@
+<input type="text" id='text1'>
+<script>
+    var handler={
+        total:0,
+        handleEvent:function(event){
+            console.log("event called "+ ++this.total);
+        }
+    };
+
+    var input = document.getElementById("text1");
+    input.addEventListener('click', handler, false);
+</script>

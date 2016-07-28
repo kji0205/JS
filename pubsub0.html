@@ -1,0 +1,30 @@
+<input type="text" id='text1'/>
+<ul id="list"></ul>
+<div id="msg"></div>
+
+<script src="pubsub.js"></script>
+<script type='text/javascript'>
+    var broker=new EventBroker();
+    var input = document.getElementById('text1');
+
+
+
+    input.addEventListener('click', function(event){
+        console.log('click....'+this.value);
+        broker.publish('refresh', this.value);
+    }, false);
+
+    var list=document.getElementById('list');
+
+    broker.subscribe(list, 'refresh', function(event){
+        console.log('list...refresh....'+event.detail);
+    });
+
+    var msg=document.getElementById('msg');
+
+    broker.subscribe(msg, 'refresh', function(event){
+        this.innerHTML=event.detail;
+        console.log('msg......refresh...'+event.detail);
+        broker.unSubscribe('refresh', this);
+    });
+</script>
