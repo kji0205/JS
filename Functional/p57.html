@@ -1,0 +1,31 @@
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+<script>
+var startTime=new Date();
+var startMSec=startTime.getMilliseconds();
+console.log(startMSec);
+
+
+function lyricSegment(n){
+    return _.chain([])
+        .push(n + " bottles of beer on the wall")
+        .push(n + " bottles of beer")
+        .push("Take one down, pass it around")
+        .tap(function(lyrics){
+            if (n > 1) {
+                lyrics.push((n-1) + " bottles of beer on the wall.");
+            } else {
+                lyrics.push("No more bottles of beer on the wall!");
+            }
+        })
+        .value();
+}
+lyricSegment(9);
+
+var b = new Date();
+console.log('startTime.getTime()', startTime.getTime());
+console.log('b.getTime()', b.getTime());
+
+var elapsed= b.getTime() - startTime.getTime();
+console.log(elapsed);
+</script>
