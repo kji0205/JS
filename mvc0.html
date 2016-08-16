@@ -1,0 +1,44 @@
+
+<script src="pubsub.js"></script>
+<script src="dataModel.js"></script>
+
+
+<div class="container">
+    <div class="page-header">
+        <h1>Event Example</h1>
+    </div>
+    <div>
+        <div class="input-group">
+            <input type="text" id="text1" class="form-control">
+            <span class="input-group-addon" id="btn">ADD</span>
+        </div>
+        <div>
+            <ul id="list" class="list-group"></ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    var broker=new EventBroker();
+    var input=document.getElementById("text1");
+    var btn=document.getElementById("btn");
+
+    btn.addEventListener("click", function(event){
+        console.log("click....."+input.value);
+        dataModel.add(input.value);
+        broker.publish("refresh");
+    }, false);
+
+    var list=document.getElementById("list");
+
+    broker.subscribe(list, "refresh", function(event){
+        console.log("list...refresh...." + event.detail);
+        var data = dataModel.findAll();
+        var str = "";
+
+        for (var i = 0, len=data.length; i < len; i++) {
+            str+=" <li id='"+data[i].id+"' class='list-group-item'>" + data[i].id + " : " + data[i].memo +"</li>";
+        }
+        this.innerHTML = str;
+    })
+</script>
