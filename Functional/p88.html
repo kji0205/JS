@@ -1,0 +1,18 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+<script>
+
+    function strangerIdentity(n){
+        for(this['i']=0; this['i']<n; this['i']++);
+        return this['i'];
+    }
+
+function f(){
+    this['a']=200;
+    return this['a'] + this['b'];
+}
+
+
+    var globals={'b': 2};
+
+
+</script>

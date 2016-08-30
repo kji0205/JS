@@ -1,0 +1,34 @@
+
+
+<script src='underscore.js'></script>
+<script>
+function whatWasTheLocal(){
+    var CAPTURED = "Oh hai";
+    return function(){
+        return "The local was: " + CAPTURED;
+    }
+}
+var reportLocal=whatWasTheLocal();
+
+function createScaleFunction(FACTOR){
+    return function(v){
+        return _.map(v, function(n){
+            return (n*FACTOR);
+        });
+    };
+}
+var scale10=createScaleFunction(10);
+
+function createWeirdScaleFunction(FACTOR){
+    return function(v){
+        this['FACTOR']=FACTOR;
+        var captures=this;
+
+        return _.map(v,_.bind(function(n){
+            return (n*this['FACTOR']);
+        }, captures));
+    };
+}
+
+var scale100=createWeirdScaleFunction(100);
+</script>
