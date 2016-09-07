@@ -1,0 +1,27 @@
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+<script>
+function finder(valueFun, bestFun, coll){
+    return _.reduce(coll, function(best, current){
+        var bestValue = valueFun(best);
+        var currentValue = valueFun(current);
+
+        return (bestValue === bestFun(bestValue, currentValue)) ? best : current;
+    });
+}
+
+console.log(finder(_.identity, Math.max, [1,2,3,4,5]));
+
+var people = [{name: "Fred", age: 65}, {name: "Lucy", age: 36}];
+
+console.log(_.max(people, function(p){return p.age}));
+// console.log(_.identity);
+
+function best(fun, coll){
+    return _.reduce(coll, function(x, y){
+        return fun(x, y) ? x : y
+    });
+}
+
+console.log(best(function(x, y){ return x > y }, [1,2,3,4,5]));
+
+</script>
