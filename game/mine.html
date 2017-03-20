@@ -121,35 +121,35 @@
         td[n-1].innerText = 'X';
     }
 
-    var fnAction = (function(seq) {
+    var fnAction = function action(seq) {
+
         console.log('seq :: ' + seq);
         var arr = [];
+        var seqBefore = seq - horizontalSize;
+        var seqAfter = seq + horizontalSize;
+        console.log('seqBefore :: ' + seqBefore);
+        console.log('seqAfter :: ' + seqAfter);
+
         var a = td[seq - 1] && (seq-1) % horizontalSize !== 9 ? td[seq - 1].innerText : '';
         var b = td[seq + 1] && (seq-1) % horizontalSize !== 0 ? td[seq + 1].innerText : '';
-        var c = td[seq - horizontalSize] ? td[seq - horizontalSize].innerText : '';
-        var c1 = td[seq - horizontalSize - 1] && parseInt((seq-1) % horizontalSize !== 9, 10) ? td[seq - horizontalSize - 1].innkrText : '';
-        var c2 = td[seq - horizontalSize + 1] && parseInt((seq+1) % horizontalSize !== 0, 10) ? td[seq - horizontalSize + 1].innerText : '';
-        var d = td[seq + horizontalSize] ? td[seq + horizontalSize].innerText : '';
-        var d1 = td[seq + horizontalSize - 1] && parseInt((seq-1) % horizontalSize, 10) !== 9 ? td[seq + horizontalSize - 1].innerText : '';
-        var d2 = td[seq + horizontalSize + 1] && parseInt((seq+1) % horizontalSize, 10) !== 0 ? td[seq + horizontalSize + 1].innerText : '';
+        var c = td[seqBefore] ? td[seqBefore].innerText : '';
+        var c1 = td[seqBefore - 1] && parseInt((seq-1) % horizontalSize, 10) !== 9 ? td[seqBefore - 1].innerText : '';
+        var c2 = td[seqBefore + 1] && parseInt((seq+1) % horizontalSize, 10) !== 0 ? td[seqBefore + 1].innerText : '';
+        var d = td[seqAfter] ? td[seqAfter].innerText : '';
+        var d1 = td[seqAfter - 1] && parseInt((seq-1) % horizontalSize, 10) !== 9 ? td[seqAfter - 1].innerText : '';
+        var d2 = td[seqAfter + 1] && parseInt((seq+1) % horizontalSize, 10) !== 0 ? td[seqAfter + 1].innerText : '';
 
-console.log('a :: ' + a);
-console.log('b :: ' + b);
-console.log('c :: ' + c);
-console.log('c1 :: ' + c1);
-console.log('c2 :: ' + c2);
-console.log('d :: ' + d);
-console.log('d1 :: ' + d1);
-console.log('d2 :: ' + d2);
+		console.log('a :: ' + a);
+		console.log('b :: ' + b);
+		console.log('c :: ' + c);
+		console.log('c1 :: ' + c1);
+		console.log('c2 :: ' + c2);
+		console.log('d :: ' + d);
+		console.log('d1 :: ' + d1);
+		console.log('d2 :: ' + d2);
 
-        if (a === 'X' || 
-            b === 'X' || 
-            c === 'X' || 
-            d === 'X' || 
-            c1 === 'X' || 
-            c2 === 'X' || 
-            d1 === 'X' || 
-            d2 === 'X') {
+        if (a === 'X' || b === 'X' || c === 'X' || d === 'X' || 
+            c1 === 'X' || c2 === 'X' || d1 === 'X' || d2 === 'X') {
 
             alert('Fail');
             for (var i = arr.length - 1; i >= 0; i--) {
@@ -167,7 +167,7 @@ console.log('d2 :: ' + d2);
             if (td[seq + horizontalSize] && td[seq + horizontalSize].innerText === 'X') {
                 td[seq + horizontalSize].className = 'td3';
             }
-            if (parseInt((seq-1) % horizontalSize, 10) !== 9 && parseInt((seq-1) % horizontalSize, 10) > 0) {
+            if (parseInt((seq-1) % horizontalSize, 10) !== 9 && parseInt((seq-1) % horizontalSize, 10) >= 0) {
                 if (td[seq - horizontalSize - 1] && td[seq - horizontalSize - 1].innerText === 'X') {
                     td[seq - horizontalSize - 1].className = 'td3';
                 }
@@ -175,7 +175,7 @@ console.log('d2 :: ' + d2);
                     td[seq + horizontalSize - 1].className = 'td3';
                 }
             }
-            if (parseInt((seq+1) % horizontalSize, 10) !== 0 && parseInt((seq+1) % horizontalSize, 10) > 0) {
+            if (parseInt((seq+1) % horizontalSize, 10) !== 0 && parseInt((seq+1) % horizontalSize, 10) >= 0) {
                 if (td[seq - horizontalSize + 1] && td[seq - horizontalSize + 1].innerText === 'X' ) {
                     td[seq - horizontalSize + 1].className = 'td3';
                 }
@@ -185,6 +185,7 @@ console.log('d2 :: ' + d2);
             }
             
         } else {
+
             if (td[seq - 1] && (seq-1) % horizontalSize !== 9 ) {
                 td[seq - 1].className = 'td2';
             }
@@ -197,7 +198,7 @@ console.log('d2 :: ' + d2);
             if (td[seq + horizontalSize]) {
                 td[seq + horizontalSize].className = 'td2';
             }
-            if (parseInt((seq-1) % horizontalSize, 10) !== 9 && parseInt((seq-1) % horizontalSize, 10) > 0) {
+            if (parseInt((seq-1) % horizontalSize, 10) !== 9 && parseInt((seq-1) % horizontalSize, 10) >= 0) {
                 if (td[seq - horizontalSize - 1]) {
                     td[seq - horizontalSize - 1].className = 'td2';
                 }
@@ -205,7 +206,7 @@ console.log('d2 :: ' + d2);
                     td[seq + horizontalSize - 1].className = 'td2';
                 }
             }
-            if (parseInt((seq+1) % horizontalSize, 10) !== 0 && parseInt((seq+1) % horizontalSize, 10) > 0) {
+            if (parseInt((seq+1) % horizontalSize, 10) !== 0 && parseInt((seq+1) % horizontalSize, 10) >= 0) {
                 if (td[seq - horizontalSize + 1] && parseInt((seq+1) % horizontalSize, 10) !== 0 ) {
                     td[seq - horizontalSize + 1].className = 'td2';
                 }
@@ -213,8 +214,48 @@ console.log('d2 :: ' + d2);
                     td[seq + horizontalSize + 1].className = 'td2';
                 }
             }
+            fnAction2(seq);
         }
-    });
+    }
+
+	var fnAction2 = function action2(seq) {
+		console.log('fnAction2 :: ' + seq);
+		var arr = [];
+		var a1Seq = seq - horizontalSize - 1;
+		var a2Seq = seq - horizontalSize;
+		var a3Seq = seq - horizontalSize + 1;
+		var a4Seq = seq - 1;
+		var a5Seq = seq + 1;
+		var a6Seq = seq + horizontalSize - 1;
+		var a7Seq = seq + horizontalSize;
+		var a8Seq = seq + horizontalSize + 1;
+		var a1 = td[a1Seq] ? td[a1Seq].innerText : '';
+		var a2 = td[a2Seq] ? td[a2Seq].innerText : '';
+		var a3 = td[a3Seq] ? td[a3Seq].innerText : '';
+		var a4 = td[a4Seq] ? td[a4Seq].innerText : '';
+		var a5 = td[a5Seq] ? td[a5Seq].innerText : '';
+		var a6 = td[a6Seq] ? td[a6Seq].innerText : '';
+		var a7 = td[a7Seq] ? td[a7Seq].innerText : '';
+		var a8 = td[a8Seq] ? td[a8Seq].innerText : '';
+		arr.push([a1Seq, a1]);
+		arr.push([a2Seq, a2]);
+		arr.push([a3Seq, a3]);
+		arr.push([a4Seq, a4]);
+		arr.push([a5Seq, a5]);
+		arr.push([a6Seq, a6]);
+		arr.push([a7Seq, a7]);
+		arr.push([a8Seq, a8]);
+		for (var i = arr.length - 1; i >= 0; i--) {
+			if (seq > 99 || seq + horizontalSize > 99) { 
+				// return false;
+			}
+			else {
+				if (arr[i][1] !== 'X') {
+					return fnAction2(arr[i][0]);
+				}
+			}
+		}
+	}
 
 
     var SetTime = 50; // 최초 설정 시간(기본 : 초)
