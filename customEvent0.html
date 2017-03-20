@@ -15,10 +15,8 @@
         </div>
         <script>
             var event=document.createEvent('Event');
-
             // 'build'라는 이름의 이벤트 정의
             event.initEvent('build', true, true);
-
             // Listen for the event.
             document.addEventListener('build', function(e){
                 // e.target matches document from above
