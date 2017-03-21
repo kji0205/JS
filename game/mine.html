@@ -110,7 +110,8 @@
         }
     });
 
-    var fnAction = function action(seq) {
+    // 주변 8개의 td 검사 (3*3)
+    var fnAction = function action(seq, gubun) {
 
         console.log('seq :: ' + seq);
         var arr = [];
@@ -137,9 +138,11 @@
 		console.log('d1 :: ' + d1);
 		console.log('d2 :: ' + d2);
 
+		// 하나라도 X가 있다면
         if (a === 'X' || b === 'X' || c === 'X' || d === 'X' || 
             c1 === 'X' || c2 === 'X' || d1 === 'X' || d2 === 'X') {
 
+        	if (gubun == '1') { return false;}
             alert('Fail');
             for (var i = arr.length - 1; i >= 0; i--) {
                 // if (arr[i]) console.log(i);
@@ -208,7 +211,7 @@
     }
 
 	var fnAction2 = function anction2(seq) {
-        if (seq > 99 || seq + horizontalSize > 99) { return false;}
+        if (seq > 99 || seq < 0 || seq + horizontalSize > 99 || seq + horizontalSize < 10) { return false;}
 		console.log('fnAction2 :: ' + seq);
 		var arr = [];
 		const a1Seq = seq - horizontalSize - 1;
@@ -255,34 +258,35 @@
         console.log('arr.length :: ' + arr.length);
 
         var idx = arr.length - 1;
-        while (idx > 0) {
-            // statement
-            if (arr[idx][1].toString() !== 'X' && parseInt(arr[idx][0], 10) > 0) {
-                td[arr[idx][0]].className = 'td2';
-                return (function() {
-                    var
-                       _idx = idx;
-
-                       console.log(_idx);
-
-                    return fnAction2(arr[_idx][0]);
-                })();
-            }
-            idx--;
-        }    
+        // while (idx > 0) {
+        //     // statement
+        //     if (arr[idx][1].toString() !== 'X' && parseInt(arr[idx][0], 10) > 0) {
+        //         td[arr[idx][0]].className = 'td2';
+        //         return function(){
+        //         	var
+        //         		_idx = idx;
+        //         	return fnAction(arr[_idx][0]);
+        //         }
+        //     }
+        //     idx--;
+        // }    
         
-		// for (var i = arr.length - 1; i >= 0; i--) {
-        //           // console.log(arr[i][0]);
-		// 	if (seq > 99 || seq + horizontalSize > 99) { 
-		// 		// return false;
-		// 	}
-		// 	else {
-		// 		if (arr[i][1].toString() !== 'X' && parseInt(arr[i][0], 10) > 0) {
-        //                   td[arr[i][0]].className = 'td2';
-		// 			return action2(arr[i][0]);
-		// 		}
-		// 	}
-		// }
+		for (var i = arr.length - 1; i >= 0; i--) {
+                  // console.log(arr[i][0]);
+			if (seq > 99 || seq + horizontalSize > 99) { 
+				// return false;
+			}
+			else {
+				if (arr[i][1].toString() !== 'X' && parseInt(arr[i][0], 10) > 0) {
+                          td[arr[i][0]].className = 'td2';
+					return (function(){
+						var
+							_i = i;
+						fnAction(arr[_i][0], 1);	
+					})();
+				}
+			}
+		}
 	}
 
 
