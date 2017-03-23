@@ -85,6 +85,9 @@
         <div class="resultLayer"> CLEAR GAME</div>
     </div>
     <script type="text/javascript">
+
+    
+
     // 
     const horizontalSize = 10;      // 가로사이즈
     const verticalSize = horizontalSize;    // 세로사이즈
@@ -287,6 +290,11 @@
     }
 
     window.onload = function TimerStart() {
+        var agent = navigator.userAgent.toLowerCase();
+        if (agent.indexOf("msie") != -1) {
+            alert("인터넷익스플로러 10버전까지는 지원하지 않습니다.");
+            return false;
+        }
         tid = setInterval('msg_time()', 1000);
     };
 
