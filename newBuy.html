@@ -1,0 +1,148 @@
+<script type="text/javascript" src="/Common/js/IframeControl.js"></script>
+<script type="text/javascript">
+    (function () {
+        document.domain = "boribori.co.kr";
+
+        var NewBuy = function () {
+            this.inIframeFlag = true;   // 아이프레임 안에서 보는 경우
+            this.islogin = "<%=this.IsLogin %>" || 'False';
+            this.userId = "<%=this.UserID %>" || '';
+            this.evtHandlerBtnA;
+            this.evtHandlerBtnB;
+            this.msg = {};
+            this.init();
+        };
+        NewBuy.prototype.init = function () {
+            this.iframeResize();
+            this.attachReservesEvent();
+            this.reservesHistory();     // 적립금 발급여부 확인
+            this.messageInit();
+        };
+        NewBuy.prototype.messageInit = function () {
+            this.msg.m001_A = '적립금 1,000원이 지급되었습니다. (사용기한: 발급일로부터 3일간)';
+            this.msg.m001_B = '적립금 500원이 지급되었습니다. (사용기한: 발급일로부터 3일간)';
+            this.msg.m075 = '2017년 첫구매 고객님이시네요~ 왼쪽의 2017년 첫구매용돈을 받아주세요!';
+            this.msg.m080 = '이벤트 대상자가 아닙니다.';
+            this.msg.m070 = '이미 다운 받으셨습니다.';
+            this.msg.m090 = '적립금 다운로드에 실패하였습니다.';
+            this.msg.m040 = '이벤트 기간이 아닙니다.';
+            this.msg.m050 = '로그인 후 이용해주세요.';
+        }
+        NewBuy.prototype.iframeResize = function () {
+            if (this.inIframeFlag) {
+                $("#leftWing", parent.document).hide();
+                var opt = {
+                    //frameId : "iframePromotion",  // 필요없음
+                    fixMenuClass: "fix-menu",  // 화면스크롤시 프레임내에 고정메뉴의 클래스명 ("middle" 클래스 추가시 고정메뉴가 가운데 정렬됨.)
+                    resizeEventClass: "click-resize",  // 프레임내에 클릭이벤트가 발생시 프레임 사이즈에 영향을 주는 클래스명
+                    scrollEventClass: "click-scroll"  // 프레임내에 클릭이벤트가 발생시 프레임 스크롤에  영향을 주는 클래스명
+                }
+                var k = new parentInIframeCtl(opt);
+            }
+        };
+        // 
+        NewBuy.prototype.attachReservesEvent = function () {
+            this.evtHandlerBtnA = function () {
+                this.getReserves('A');
+            } .bind(this);
+            this.evtHandlerBtnB = function () {
+                this.getReserves('B');
+            } .bind(this);
+            $('#aReserves1000').on('click', this.evtHandlerBtnA);
+            $('#aReserves500').on('click', this.evtHandlerBtnB);
+        };
+        // 적립금 발급여부
+        NewBuy.prototype.reservesHistory = function () {
+            var __this = this;
+            $.post("NewBuy.aspx", { action: "getReservesHistory", UserID: this.userId }, function (rtn) {
+                __this.changeBtn(rtn.rtnCode);
+            });
+        }
+        // 버튼이미지 변경
+        NewBuy.prototype.changeBtn = function (type) {
+            if (type == "A") {
+                $('#aReserves1000').html('<img src="http://cdn.halfclub.com/Images_Web/2017/20170327_br_newBuy/web/br/point_01_fin.jpg" alt="발급완료">');
+                $('#aReserves1000').off();
+            } else if (type == "B") {
+                $('#aReserves500').html('<img src="http://cdn.halfclub.com/Images_Web/2017/20170327_br_newBuy/web/br/point_02_fin.jpg" alt="발급완료">');
+                $('#aReserves500').off();
+            } else {
+            }
+        }
+        // 적립금 다운
+        NewBuy.prototype.getReserves = function (type) {
+            var __this = this;
+            var isCpDown;
+            if (__this.islogin == "False") {
+                if (confirm("로그인 후 이용해주세요.")) {
+                    if (__this.inIframeFlag) {
+                        parent.LoginWindows();
+                    } else {
+                        //top.location.href = "http://www.boribori.co.kr/Member/Login.asp?rurl=" + escape(parent.location.href);
+                        window.open("https://member.boribori.co.kr/login", "로그인", "width=420 height=450,left=300,top=100,toolbar=no,menubar=no,scrollbars=no,resizable=yes");
+                    }
+                }
+                return;
+            }
+            var param = { action: 'getReserves', UserID: __this.userId, Gubun: type };
+            $.ajax({
+                type: "POST",
+                url: 'NewBuy.aspx',
+                data: param,
+                beforeSend: function (jqXHR, opts) {
+                    //전송중일때
+                    if (isCpDown) {
+                        jqXHR.abort();
+                        alert("응모중입니다.");
+                    }
+                    else { //전송중이 아닐때
+                        isCpDown = true;
+                    }
+                },
+                success: function (results) {
+                    switch (results.rtnCode) {
+                        case "1":
+                            if (type == 'A') {
+                                alert(__this.msg.m001_A);
+                                __this.changeBtn(type);
+                            } else if (type == 'B') {
+                                alert(__this.msg.m001_B);
+                                __this.changeBtn(type);
+                            }
+                            break;
+                        case "70":
+                            alert(__this.msg.m070);
+                            break;
+                        case "75":
+                            alert(__this.msg.m075);
+                            break;
+                        case "80":
+                            alert(__this.msg.m080);
+                            break;
+                        case "90":
+                            alert(__this.msg.m090);
+                            break;
+                        case "40":
+                            alert(__this.msg.m040);
+                            break;
+                        case "50":
+                        case "60":
+                            alert(__this.msg.m050);
+                            break;
+                        default:
+                            alert(__this.msg.m090);
+                            break;
+                    }
+                },
+                complete: function (results) {
+                    isCpDown = false;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("서버와 통신중 에러가 발생했습니다. " + errorThrown);
+                }
+            });
+        };
+
+        var newBuy = new NewBuy();
+    } ());
+</script>
