@@ -1,10 +1,9 @@
 <script type="text/javascript" src="/Common/js/IframeControl.js"></script>
 <script type="text/javascript">
     (function () {
-        document.domain = "boribori.co.kr";
 
-        var NewBuy = function () {
-            this.inIframeFlag = true;   // 아이프레임 안에서 보는 경우
+        var MyFunc = function () {
+            this.isFrame = (window !== parent) ? true : false;   // 아이프레임 안에서 보는 경우
             this.islogin = "<%=this.IsLogin %>" || 'False';
             this.userId = "<%=this.UserID %>" || '';
             this.evtHandlerBtnA;
@@ -12,13 +11,13 @@
             this.msg = {};
             this.init();
         };
-        NewBuy.prototype.init = function () {
+        MyFunc.prototype.init = function () {
             this.iframeResize();
             this.attachReservesEvent();
             this.reservesHistory();     // 적립금 발급여부 확인
             this.messageInit();
         };
-        NewBuy.prototype.messageInit = function () {
+        MyFunc.prototype.messageInit = function () {
             this.msg.m001_A = '적립금 1,000원이 지급되었습니다. (사용기한: 발급일로부터 3일간)';
             this.msg.m001_B = '적립금 500원이 지급되었습니다. (사용기한: 발급일로부터 3일간)';
             this.msg.m075 = '2017년 첫구매 고객님이시네요~ 왼쪽의 2017년 첫구매용돈을 받아주세요!';
@@ -28,8 +27,8 @@
             this.msg.m040 = '이벤트 기간이 아닙니다.';
             this.msg.m050 = '로그인 후 이용해주세요.';
         }
-        NewBuy.prototype.iframeResize = function () {
-            if (this.inIframeFlag) {
+        MyFunc.prototype.iframeResize = function () {
+            if (this.isFrame) {
                 $("#leftWing", parent.document).hide();
                 var opt = {
                     //frameId : "iframePromotion",  // 필요없음
@@ -41,7 +40,7 @@
             }
         };
         // 
-        NewBuy.prototype.attachReservesEvent = function () {
+        MyFunc.prototype.attachReservesEvent = function () {
             this.evtHandlerBtnA = function () {
                 this.getReserves('A');
             } .bind(this);
@@ -52,30 +51,30 @@
             $('#aReserves500').on('click', this.evtHandlerBtnB);
         };
         // 적립금 발급여부
-        NewBuy.prototype.reservesHistory = function () {
+        MyFunc.prototype.reservesHistory = function () {
             var __this = this;
-            $.post("NewBuy.aspx", { action: "getReservesHistory", UserID: this.userId }, function (rtn) {
+            $.post("MyFunc.aspx", { action: "getReservesHistory", UserID: this.userId }, function (rtn) {
                 __this.changeBtn(rtn.rtnCode);
             });
         }
         // 버튼이미지 변경
-        NewBuy.prototype.changeBtn = function (type) {
+        MyFunc.prototype.changeBtn = function (type) {
             if (type == "A") {
-                $('#aReserves1000').html('<img src="http://cdn.halfclub.com/Images_Web/2017/20170327_br_newBuy/web/br/point_01_fin.jpg" alt="발급완료">');
+                $('#aReserves1000').html('<img src="http://cdn.halfclub.com/Images_Web/2017/20170327_br_MyFunc/web/br/point_01_fin.jpg" alt="발급완료">');
                 $('#aReserves1000').off();
             } else if (type == "B") {
-                $('#aReserves500').html('<img src="http://cdn.halfclub.com/Images_Web/2017/20170327_br_newBuy/web/br/point_02_fin.jpg" alt="발급완료">');
+                $('#aReserves500').html('<img src="http://cdn.halfclub.com/Images_Web/2017/20170327_br_MyFunc/web/br/point_02_fin.jpg" alt="발급완료">');
                 $('#aReserves500').off();
             } else {
             }
         }
         // 적립금 다운
-        NewBuy.prototype.getReserves = function (type) {
+        MyFunc.prototype.getReserves = function (type) {
             var __this = this;
             var isCpDown;
             if (__this.islogin == "False") {
                 if (confirm("로그인 후 이용해주세요.")) {
-                    if (__this.inIframeFlag) {
+                    if (__this.isFrame) {
                         parent.LoginWindows();
                     } else {
                         //top.location.href = "http://www.boribori.co.kr/Member/Login.asp?rurl=" + escape(parent.location.href);
@@ -87,7 +86,7 @@
             var param = { action: 'getReserves', UserID: __this.userId, Gubun: type };
             $.ajax({
                 type: "POST",
-                url: 'NewBuy.aspx',
+                url: 'MyFunc.aspx',
                 data: param,
                 beforeSend: function (jqXHR, opts) {
                     //전송중일때
@@ -143,6 +142,6 @@
             });
         };
 
-        var newBuy = new NewBuy();
+        new MyFunc();
     } ());
 </script>
