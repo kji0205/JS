@@ -1,0 +1,25 @@
+<script>
+name = 'global';
+
+function Animal(){
+    this.name = 'Animal';
+}
+Animal.prototype.speak = function(){
+    return this;
+};
+Animal.prototype.speak2 = function(){
+    return this.name;
+};
+Animal.eat = function(){
+    return this;
+};
+
+let obj = new Animal();
+
+let speak = obj.speak;
+speak();
+
+var speak2 = obj.speak2;
+speak2();
+
+</script>

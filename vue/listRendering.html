@@ -1,9 +1,26 @@
 <script src="https://unpkg.com/vue"></script>
+
 <ul id="example-1">
+	<div>
+	  <span v-for="n in 10">{{ n }}</span>
+	</div>
   <li v-for="item in items">
     {{ item.message }}
   </li>
 </ul>
+<ul id="repeat-object" class="demo">
+  <li v-for="value in object">
+    {{ value }}
+  </li>
+</ul>
+<br>
+<ul id="repeat-object2" class="demo">
+  <template v-for="item in object">
+    <li>{{ item.msg }}</li>
+    <li class="divider"></li>
+  </template>
+</ul>
+
 <script type="text/javascript">
 var example1 = new Vue({
   el: '#example-1',
@@ -14,5 +31,25 @@ var example1 = new Vue({
     ]
   }
 })
-
+new Vue({
+  el: '#repeat-object',
+  data: {
+    object: {
+      firstName: 'John',
+      lastName: 'Doe',
+      age: 30
+    }
+  }
+})
+new Vue({
+  el: '#repeat-object2',
+  data: {
+    object: {
+      firstName: 'John',
+      lastName: 'Doe',
+      age: 30,
+      msg: '123'
+    }
+  }
+})
 </script>

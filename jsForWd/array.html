@@ -1,0 +1,60 @@
+<script type="">
+    var a = ['a', 'b', 'c'];
+    // stack
+    a.push('d');
+    a.pop();
+    // queue
+    a.unshift('A');
+    a.shift();
+
+    var b = [1,2,3];
+    b.reverse();
+    b.sort(compare);
+    b.sort(compare).reverse();
+
+    function compare(v1, v2){
+        return v1 - v2;
+    }
+
+    var c = [
+        { id: 'c1', date: new Date(2017, 1, 1) },
+        { id: 'c2', date: new Date(2017, 2, 1) },
+        { id: 'c3', date: new Date(2016, 2, 1) },
+    ];
+    
+    var d = ['d', 'e', 'f'];
+    var e = c.concat(d);
+
+    // slice : 원래 배열은 건드리지 않음
+    var f = ['a','b','c'];
+    var f1 = f.slice(1, 2);
+    var f2 = f.slice(2, 1);
+    var f3 = f.slice(0);
+
+    // splice : 삭제, 삽입, 대체
+    // 원래 배열도 수정됨
+    var e = ['a','b','c'];
+    var e1 = e.splice(0, 1);
+    var e1 = e.splice(0, 0, 'A');
+    var e1 = e.splice(0, 1, 'A2');
+
+    // indexOF, lastIndexOf
+    // 변수로 대입하니 검색이 된다...
+    var f = { id: 'f1'};
+    var f1 = [{ id: 'f1'}];
+    var f2 = [f];
+    var f3 = f1.indexOf(f);
+    var f4 = f2.indexOf(f);
+
+    // IE8 이하 버전을 위해 Array prototype 추가
+    if (!Array.indexOf) {
+      Array.prototype.indexOf = function (obj, start) {
+        for (var i = (start || 0); i < this.length; i++) {
+          if (this[i] == obj) {
+            return i;
+          }
+        }
+      }
+    }
+
+</script>

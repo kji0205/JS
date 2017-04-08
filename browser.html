@@ -1,0 +1,87 @@
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<script type="">
+    
+    var leftPos = (typeof window.screenLeft == 'number') ? window.screenLeft : window.screenX;
+    var topPos = (typeof window.screenTop == 'number') ? window.screenTop : window.screenY;
+
+    /*
+    outerWidth, outerHeight
+    - 최상위 창, 프레임 호출 무관하게 브라우저 창 크기 반환
+    - 오페라만 뷰포트 크기 반환
+
+    innerWidth, innerHeight
+    - 브라우저 창 내부의 페이지 뷰포트 크기
+    - 테두리와 툴바는 포함되지 않음
+    */
+
+    var pageWidth = window.innerWidth;
+    var pageHeight = window.innerHeight;
+
+    if (typeof pageWidth != 'number') {
+        if (document.compatMode == 'CSS1Compat') {
+            pageWidth = document.documentElement.clientWidth;
+            pageHeight = document.documentElement.clientHeight;
+        } else {
+            pageWidth = document.body.clientWidth;
+            pageHeight = document.body.clientHeight;
+        }
+    }
+
+    try {
+        var wo = window.open('http://google.com', 'topFrame', 'height=300, width=300, top=10, left=10');
+
+        if (wo) {topFrame.close();}
+    } catch(e) {
+        // statements
+        console.log(e);
+        console.log('The popup was blocked!');
+    }
+    
+    // location.search
+    (function getQueryStringArgs(){
+
+        var qs = (location.search.length > 0 ? location.search.substring(1) : '');
+        args = {};
+
+        var items = qs.length ? qs.split('&') : [];
+        var item = null;
+        var name = null;
+        var value = null;
+
+        var i=0, len = items.length;
+
+        for(i=0; i < len; i++){
+            item = items[i].split('=');
+            name = decodeURIComponent(item[0]);
+            value = decodeURIComponent(item[1]);
+
+            if (name.length) {
+                args[name] = value;
+            }
+        }
+
+        return args;
+    })();
+
+    // 플러그인 감지
+    function hasPlugin(name){
+        name = name.toLowerCase();
+        for (var i=0; i<navigator.plugins.length; i++){
+            if (navigator.plugins[i].name.toLowerCase().indexOf(name) > -1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    console.log(hasPlugin('Flash'));
+
+    (function(){
+        for (var i=0; i<navigator.plugins.length; i++){
+            console.log(navigator.plugins[i].name);
+        }
+    })();
+
+    window.resizeTo(screen.availWidth, screen.availHeight);
+</script>

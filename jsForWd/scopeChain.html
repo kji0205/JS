@@ -1,0 +1,31 @@
+<script type="">
+	
+	var a = 'a';
+
+	/*
+	* outer()는 this를 가지지 못한다.
+	*/
+	function outer(){
+		this.t = 'this';
+		var b = a;
+		console.log(b);
+		inner();
+
+		function inner (argument) {
+			var c = b;
+		}
+	}
+	
+	// new 로 생성을 하면 this가 window 가 아니라 outer 로 잡힌다.
+	var o = new outer;
+	// o.inner();	// error - prototype 을 사용하지 않으면 new 로 만들어도 메서드가 생성되지 않는다.
+
+	a = null;
+	
+	var o = {};
+	o.init = function(){
+		console.log('o init');
+	};
+	o.init();
+
+</script>

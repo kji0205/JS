@@ -1,0 +1,84 @@
+<script type="">
+    function createComparisonFunction(propertyName){
+
+        return function(object1, object2){
+            var value1 = object1[propertyName];
+            var value2 = object2[propertyName];
+
+            if (value1 < value2) {
+                return -1;
+            } else if (value1 > value2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        };
+    }
+
+    var data = [
+        {name: 'name1', age: 30},
+        {name: 'name2', age: 20},
+    ];
+
+    data.sort(createComparisonFunction('age'));
+
+    // P246 - 기생 생성자 패턴
+    function SpecialArray(){
+
+        // 배열을 생성합니다.
+        var values = new Array();
+
+        // 값을 추가합니다.
+        values.push.apply(values, arguments);
+
+        // 메서드를 할당합니다.
+        values.toPipedString = function(){
+            return this.join('|');
+        }
+
+        return values;
+    }
+    
+    var colors = new SpecialArray('red', 'blue', 'green');
+    console.log(colors.toPipedString());
+
+    // 방탄 생성자 패턴
+    function Person(name, age, job){
+
+        // 반환할 객체를 생성합니다.
+        var o = new Object();
+
+        // 옵션: 변수와 함수는 여기서 정의합니다.
+
+        // 메서드를 등록합니다
+        o.sayName = function(){
+            console.log(name);
+        };
+
+        return o;
+    }
+
+    // 상속
+    // 프로토타입 체인
+    function SuperType(){
+        this.property = true;
+    }
+
+    SuperType.prototype.getSuperValue = function(){
+        return this.property;
+    };
+
+    function SubType(){
+        this.subproperty = false;
+    }
+
+    // SuperType을 상속
+    SubType.prototype = new SuperType();
+    SubType.prototype.getSubValue = function(){
+        return this.subproperty;
+    };
+
+    var instance = new SubType();
+    console.log(instance.getSuperValue());
+    
+</script>

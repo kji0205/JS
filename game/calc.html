@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <title>calc</title>
+
+</head>
+<body>
+<style type="text/css">
+  .wrapper {
+    margin:0 auto;
+    /*width: 400px;*/
+    border: 2px solid gray;
+    background-color: #e6e6e6;
+  }
+  .wrapper div {
+    position: relative;
+    width: 100%;
+    border: 1px solid darkgreen;
+    /*display: inline;*/
+    /*display:table-cell; */
+  }
+  .wrapper div:nth-child(n+3){
+    color: red;
+    /*float: left;*/
+    /*display: inline-block;*/
+  }
+  .wrapper > div > div {
+    /*display: none;*/
+  }
+  table{
+  }
+  td{
+    width: 100px;
+    background-color: #d3d3d3;
+    text-align: center;
+  }
+  td.calc-view{
+    text-align: right;
+  }
+</style>
+<div class="wrapper">
+  <!-- <div>0</div>
+  <div>
+  <div>AC</div>
+  <div>+/-</div>
+  <div>%</div>
+  <div>/</div>
+  </div>
+  <div>
+  <div>7</div>
+  <div>8</div>
+  <div>9</div>
+  <div>X</div>
+  </div>
+  <div>
+  <div>4</div>
+  <div>5</div>
+  <div>6</div>
+  <div>-</div>
+  </div>
+  <div>
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+  <div>+</div>
+  </div>
+  <div>
+  <div>0</div>
+  <div>.</div>
+  <div>=</div>
+  </div> -->
+  <table>
+    <tr>
+      <td colspan="2" class="calc-mode"></td>
+      <td colspan="2" class="calc-subView"></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="calc-view">0</td>
+    </tr>
+    <tr>
+      <td>AC</td>
+      <td>+/-</td>
+      <td>%</td>
+      <td>/</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>X</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>+</td>
+    </tr>
+    <tr>
+      <td colspan="2">0</td>
+      <td>.</td>
+      <td>=</td>
+    </tr>
+  </table>
+</div>
+<script type="text/javascript" src="/lib/jquery-3.2.1.js"></script>
+<script type="">
+
+var Calculator   = function(){
+  this.mode           = null;
+  this.modeChangeFlag = false;
+  this.cValue         = 0;
+  this.cValue1        = 0;
+  this.cValue2        = 0;
+  this.fnInit  = function(){
+      // console.log(this.mode);
+    var 
+        that = this;
+
+    $('td').on('click', function(e){
+
+      return (function(e){
+        if (e.target.nodeName == 'TD' && e.target.className != 'calc-view') {
+
+          switch (e.target.innerText) {
+            case 'AC':
+                that.mode = null;
+                that.cValue = 0;
+                that.cValue1 = 0;
+                that.cValue2 = 0;
+                $('.calc-view').text(0);
+                break;
+            case '+/-':
+                $('.calc-view').text('+/-');
+                break;
+            case '%':
+                that.fnSetMode(e.target.innerText);
+                break;
+            case '/':
+                that.fnSetMode(e.target.innerText);
+                break;
+            case 'X':
+                that.fnSetMode(e.target.innerText);
+                break;
+            case '-':
+                that.fnSetMode(e.target.innerText);
+                break;
+            case '+':
+                that.fnSetMode(e.target.innerText);
+                break;
+            case '=':
+                that.fnCalc();
+                break;
+            case '.':
+                $('.calc-view').text('.');
+                break;
+            default:
+                that.fnSetNumber(e.target.innerText);
+                break;
+          }
+          
+          // console.log(e.target.innerText);
+          // console.log(e);
+        }
+      }(e));
+    });
+  };
+  this.fnSetNumber = function(number){
+      if (this.mode) {
+          this.fnSetNumberZeroCheck(number);
+          this.cValue2 = number;                
+      } else {
+          this.fnSetNumberZeroCheck(number);
+          this.cValue1 = number;                                
+      }
+      // $('.calc-view').text(number);
+      this.modeChangeFlag = false;
+  };
+  this.fnSetNumberZeroCheck = function(number){
+      if ($('.calc-view').text() != '0') {
+          if (this.modeChangeFlag) {
+              $('.calc-view').text(number);
+          } else {
+              $('.calc-view').text($('.calc-view').text() + number);                    
+          }
+      } else {
+          $('.calc-view').text(number);
+      }
+  }
+  this.fnSetMode    = function(a, b){
+      this.mode     = a;
+      this.modeChangeFlag = true;
+      $('.calc-mode').text(a);
+      if (this.cValue1 && this.cValue2) {
+          this.fnCalc();
+      }else{
+          this.cValue1  = Number($('.calc-view').text());
+      }
+  };
+  this.fnChangeMode = function(m){
+      this.mode     = m;
+  };
+  // 계산 함수
+  this.fnCalc = function(){
+      
+    if (!this.mode) {
+      return;
+    }
+    if (!(this.cValue1 && this.cValue2)) {
+      this.mode = null;
+      return;
+    }
+    switch (this.mode) {
+      case '+'        : 
+        this.cValue = Number(this.cValue1) + Number(this.cValue2);
+        break;
+      case '-'        : 
+        this.cValue = Number(this.cValue1) - Number(this.cValue2);
+        break;
+      case 'X'        : 
+        this.cValue = Number(this.cValue1) * Number(this.cValue2);
+        break;
+      case '/'        : 
+        this.cValue = Number(this.cValue1) / Number(this.cValue2);
+        break;
+      default         : 
+        // statements_def
+        break;
+    }
+    this.mode    = null;
+    this.cValue2 = 0;
+    $('.calc-view').text(this.cValue);
+    this.cValue1 = this.cValue
+    $('.calc-mode').text('');
+  };
+}
+var calc = new Calculator();
+calc.fnInit();
+
+setInterval(function(){
+  var a = calc.mode;
+  var b = calc.modeChangeFlag;
+  var c = calc.cValue;
+  var d = calc.cValue1;
+  var e = calc.cValue2;
+  console.log('|mode| => ' + a + '\r\n|modeChangeFlag| => ' + b + '\r\n|cValue| => ' + c + '\r\n|cValue1| => ' + d + '\r\n|cValue2| => ' + e);
+}, 2000);
+</script>
+</body>
+</html>

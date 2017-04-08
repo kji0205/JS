@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>tetris</title>
+</head>
+<body>
+<canvas id="myCanvas" width="200" height="400" style="border:1px solid #000000;"></canvas>
+<script type="text/javascript">
+    
+    'strict mode';
+
+    var blockType = ['bType1', 'bType2', 'bType3', 'bType4', 'bType5', 'bType6'];
+
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    ctx.beginPath();
+
+    class BlockType{
+        constructor(x, y, w, h, color){
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+            this.color = color;
+            this.tick;
+
+            this.init();
+        }
+        init(){
+            var _this = this;
+        }
+        draw(x, y){
+
+            this.tick = setInterval(function(){
+                // _this.draw(0, 20);
+                if (this.y + this.h *2 >= 400) {
+                    clearTimeout(this.tick);
+                }
+                if (x || y) {
+                    ctx.beginPath();
+                    this.x += x;
+                    this.y += y;
+                    ctx.clearRect(this.x, this.y, this.w, this.h);
+                    ctx.fillRect(x + this.x, y + this.y, this.w, this.h);
+                } else {
+                    ctx.beginPath();
+                    ctx.fillRect(this.x, this.y, this.w, this.h);
+                }
+            }, 500);        
+            
+        }
+    }
+
+    var blockType1 = new BlockType(100, 0, 10, 40, 'green');
+    blockType1.draw();
+    
+var box = {
+    x: 100,
+    y: 0,
+    w: 20,
+    h: 20,
+    color: 'red',
+    draw: function (x, y) {
+        if (this.y - this.h >= 400) return;
+        if (x || y) {
+            ctx.beginPath();
+            this.x += x;
+            this.y += y;
+            console.log(this.x);
+            console.log(this.y);
+            ctx.clearRect(this.x, this.y, this.w, this.h);
+            ctx.fillRect(x + this.x, y + this.y, this.w, this.h);
+        }else {
+            ctx.beginPath();
+            ctx.fillRect(this.x, this.y, this.w, this.h);
+        }
+    }
+}
+// box.draw();
+// setInterval(function(){box.draw(0, 20)}, 1000);
+
+
+var ball = {
+  x: 10,
+  y: 10,
+  radius: 5,
+  color: 'blue',
+  draw: function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+};
+
+ball.draw();
+</script>
+</body>
+</html>

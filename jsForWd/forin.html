@@ -1,0 +1,25 @@
+<script>
+var json = [
+    {id: 'a123', code: 'a123'},
+    {id: 'a123', code: 'a123'},
+    {id: 'bbb', code: 'b1'},
+];
+var _arr = [];
+var arr = [];
+var i=0;
+var j=0;
+var jLen = json.length;
+    
+for (i; i < jLen; i++) {
+    if (_arr.indexOf(json[i].id) === -1 ) {
+        _arr.push(json[i].id);
+        arr.push(json[i]);
+    }
+}
+console.log(_arr);
+console.log(arr);
+
+for (var obj in json[0]) {
+    console.log(obj);
+}
+</script>

@@ -10,7 +10,23 @@
 </div>
 <div id="example">
   <my-component></my-component>
+	<template v-if="loginType === 'username'">
+	  <label>사용자 이름</label>
+	  <input placeholder="사용자 이름을 입력하세요" key="username-input">
+	</template>
+	<template v-else>
+	  <label>이메일</label>
+	  <input placeholder="이메일 주소를 입력하세요" key="email-input">
+	</template>
+
+	<div v-if="Math.random() > 0.5">
+	  이제 나를 볼 수 있어요
+	</div>
+	<div v-else>
+	  이제는 안보입니다
+	</div>
 </div>
+
 <script src="https://unpkg.com/vue"></script>
 <script type="text/javascript">
 var example1 = new Vue({
@@ -21,11 +37,16 @@ var example1 = new Vue({
 })
 // 등록
 Vue.component('my-component', {
-  template: '<div>사용자 정의 컴포넌트 입니다!</div>'
+  template: '<div>사용자 정의 컴포넌트 입니다!</div>',
+
 })
 // 루트 인스턴스 생성
 new Vue({
-  el: '#example'
+  el: '#example',
+  data: {  },
+  methods: {
+  	loginType: true
+  }
 })
 </script>
 </body>

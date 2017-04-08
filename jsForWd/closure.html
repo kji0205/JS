@@ -1,0 +1,57 @@
+<script type="">
+    function createFunctions(){
+
+        var result = new Array();
+
+        for(var i = 0; i < 10; i++){
+            result[i] = function(){
+                return i;
+            };
+        }
+
+        return result;
+    }
+
+    function createFunctions2(){
+
+        var result = [];
+
+        var i=0;
+        for (i; i < 10; i++){
+            result[i] = function(num){
+                return function(){
+                    return num;
+                }
+            }(i);
+        }
+
+        return result;
+    }
+
+    var name = 'The Window';
+    (function(){
+
+        // var name = 'The Window';
+
+        var object = {
+            name: 'My Object',
+            getNameFunc: function(){
+                return function(){
+                    return this.name;
+                };
+            },
+            getNameFunc2: function(){
+                var that = this;
+                return function(){
+                    return that.name;
+                };
+            }
+        };
+
+        console.log(object.getNameFunc()());
+        console.log(object.getNameFunc2()());
+    })();
+    
+
+
+</script>
