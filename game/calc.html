@@ -173,11 +173,14 @@ var Calculator   = function(){
   };
   this.fnSetNumber = function(number){
       if (this.mode) {
-          this.fnSetNumberZeroCheck(number);
-          this.cValue2 = number;                
+        this.fnSetNumberZeroCheck(number);
+        this.cValue2 = number;    
+      } else if (this.cValue1) {
+        this.fnSetNumberZeroCheck(number);
+        this.cValue2 = number;             
       } else {
-          this.fnSetNumberZeroCheck(number);
-          this.cValue1 = number;                                
+        this.fnSetNumberZeroCheck(number);
+        this.cValue1 = number;                                
       }
       // $('.calc-view').text(number);
       this.modeChangeFlag = false;
@@ -233,10 +236,10 @@ var Calculator   = function(){
         // statements_def
         break;
     }
-    this.mode    = null;
-    this.cValue2 = 0;
+    // this.mode    = null;
+    // this.cValue2 = 0;    
     $('.calc-view').text(this.cValue);
-    this.cValue1 = this.cValue
+    this.cValue1 = this.cValue;
     $('.calc-mode').text('');
   };
 }
