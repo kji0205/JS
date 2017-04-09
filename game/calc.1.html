@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <title>calc</title>
+
+</head>
+<body>
+<style type="text/css">
+  .wrapper {
+    margin:0 auto;
+    /*width: 400px;*/
+    border: 2px solid gray;
+    background-color: #e6e6e6;
+  }
+  .wrapper div {
+    position: relative;
+    width: 100%;
+    border: 1px solid darkgreen;
+    /*display: inline;*/
+    /*display:table-cell; */
+  }
+  .wrapper div:nth-child(n+3){
+    color: red;
+    /*float: left;*/
+    /*display: inline-block;*/
+  }
+  .wrapper > div > div {
+    /*display: none;*/
+  }
+  table{
+  }
+  td{
+    width: 100px;
+    background-color: #d3d3d3;
+    text-align: center;
+    padding: 10px;
+  }
+  td.calc-view{
+    text-align: right;
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+</style>
+<div class="wrapper" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+  <table>
+    <tr>
+      <td colspan="2" class="calc-mode"></td>
+      <td colspan="2" class="calc-subView"></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="calc-view">0</td>
+    </tr>
+    <tr>
+      <td onclick="fnAc()">AC</td>
+      <td>+/-</td>
+      <td>%</td>
+      <td onclick="fnCalc('/')">/</td>
+    </tr>
+    <tr>
+      <td onclick="fnView(7)">7</td>
+      <td onclick="fnView(8)">8</td>
+      <td onclick="fnView(9)">9</td>
+      <td onclick="fnCalc('*')">*</td>
+    </tr>
+    <tr>
+      <td onclick="fnView(4)">4</td>
+      <td onclick="fnView(5)">5</td>
+      <td onclick="fnView(6)">6</td>
+      <td onclick="fnCalc('-')">-</td>
+    </tr>
+    <tr>
+      <td onclick="fnView(1)">1</td>
+      <td onclick="fnView(2)">2</td>
+      <td onclick="fnView(3)">3</td>
+      <td onclick="fnCalc('+')">+</td>
+    </tr>
+    <tr>
+      <td colspan="2" onclick="fnView(0)">0</td>
+      <td>.</td>
+      <td onclick="fnCalc('=')">=</td>
+    </tr>
+  </table>
+</div>
+<div class="log">
+
+</div>
+<script src="/lib/jquery-3.2.1.js"></script>
+<script>
+var stack = [];
+var oStack = [];
+var iChangeState = false;  // true: 새로 입력
+
+function fnView(o){
+  var n = Number($('.calc-view').text());
+  if (iChangeState) {
+    $('.calc-view').text(o);
+    iChangeState = false;
+  } else {
+    if (n) {
+      $('.calc-view').text($('.calc-view').text() + o);
+    } else {
+      $('.calc-view').text(o);
+    }
+  }
+}
+
+function fnCalc(op){
+  iChangeState = true;
+  var num = $('.calc-view').text();
+  var lNum = 0;
+  var rNum = 0;
+  stack.push(num);
+  oStack.push(op);
+  if (stack.length < 2) return;
+  switch (op) {
+    case '+':
+      lNum =  Number(stack.pop());
+      rNum =  Number(stack.pop());
+      num  =  lNum + rNum;
+      stack.push(num);
+      oStack.pop();
+      break;
+    case '*':
+      lNum =  Number(stack.pop());
+      rNum =  Number(stack.pop());
+      num  =  lNum * rNum;
+      stack.push(num);
+      oStack.pop();
+      break;
+    default:
+      break;
+  }
+  $('.calc-view').text(num);
+}
+
+function fnAc(){
+  stack = [];
+  oStack = [];
+  iChangeState = true;
+  $('.calc-view').text(0);
+}
+</script>
+</body>
+</html>
