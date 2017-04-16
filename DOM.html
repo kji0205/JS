@@ -5,6 +5,10 @@
         <li>3</li>
     </ul>
 </div>
+<div>
+    <img src="" alt="1">
+    <img src="" alt="2" name='myImage'>
+</div>
 <script type="">
     // IE9 +
     var someNode = document.querySelector('div');
@@ -43,5 +47,12 @@
     var li = document.querySelector('li');
     // var returnNode = ul.appendChild(ul.lastChild());
 
-    // - P382
+    // reference body
+    var body = document.body;
+
+    var images = document.getElementsByTagName('img');
+    console.log(images.length);
+    console.log(images[0].src);
+    console.log(images.item(0).src);
+    var myImage = images.namedItem('myImage');
 </script>
