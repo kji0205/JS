@@ -1,0 +1,55 @@
+<html>
+<head>
+    <style>
+        .playDiv{
+            width:100px;
+            height:200px;
+            border: 1px solid green;
+            position: absolute;
+            
+        }
+        .bar{
+            width: 10px;
+            height: 10px;
+            /*padding: 1px;*/
+        }
+        div[class^="innerBar"]{
+            background-color: black;
+            width: 9px;
+            height: 9px;
+            margin: 1px;
+            position: relative;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="playDiv">
+        <div class="bar">
+            <!-- <div class="innerBar"></div>
+            <div class="innerBar"></div>
+             -->
+        </div>
+    </div>
+    <script>
+        var tmp = '';
+        for(var i = 0, length1 = 20; i < length1; i++){
+            for(var j =0, len = 10; j < len; j++){
+                tmp += "<div class=\"innerBar" + i + "_" + j+ "\"></div>";    
+            }
+        }
+        var bar = document.querySelector('.playDiv');
+        bar.innerHTML = tmp;
+
+        var tBar = document.querySelector('.innerBar4_0');
+        tBar.style.backgroundColor = 'red';
+        tBar = document.querySelector('.innerBar5_0');
+        tBar.style.backgroundColor = 'red';
+        tBar = document.querySelector('.innerBar6_0');
+        tBar.style.backgroundColor = 'red';
+        tBar = document.querySelector('.innerBar7_0');
+        tBar.style.backgroundColor = 'red';
+    </script>
+</body>
+    
+</html>

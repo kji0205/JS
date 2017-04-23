@@ -1,0 +1,130 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div>
+            <select name="" id="" class="select1">
+                <option value="">상품을 선택하세요</option>
+            </select>
+            <br>
+            <select name="" id="" class="select2">
+                <option value="">옵션을 선택하세요</option>
+            </select>
+        </div>
+        <script>
+            var EventHandler = function(){
+                var body = document.body;
+                var prdOptionClick = function(){}
+            }
+
+            var data = [
+                {
+                    code: 'P01',
+                    name: 'test product1',
+                    brandName: 'brd',
+                    price: 30000,
+                    optionName: 'black',
+                    options: [
+                        {
+                            code: 'opt1',
+                            name: 'optNm1',
+                            size: '80',
+                            price: 3000
+                        },
+                        {
+                            code: 'opt2',
+                            name: 'optNm2',
+                            size: '100',
+                            price: 2200
+                        },
+                    ]
+                },
+                {
+                    code: 'P02',
+                    name: 'test product2',
+                    brandName: 'brd2',
+                    price: 20000,
+                    optionName: '그린',
+                    options: [
+                        {
+                            code: 'opt1',
+                            name: 'optNm1',
+                            size: '350',
+                            price: 170
+                        },
+                        {
+                            code: 'opt2',
+                            name: 'optNm2',
+                            size: '280',
+                            price: 300
+                        },
+                    ]
+                }
+            ];
+            var PrdInfoController = {
+                body: document.body,
+                select1: document.querySelector('.select1'),
+                select2: document.querySelector('.select2'),
+                init: function(_dealYn){
+                    this.config.dealYn = _dealYn || 'N';
+                    this.getPrdList();
+                },
+                config: {
+                    dealYn: ''
+                },
+                getPrdList: function(){
+                    var select = this.select1;
+                    var option = '';
+                    for(var i=0, len = data.length; i<len; i++){
+                        option = document.createElement('option');
+
+                        option.text = data[i].name;
+                        option.value = data[i].code;
+                        select.add(option);
+                    };
+                    // select.onchange = function(_this){
+                    //     console.log('select click 1');
+                    //     _this.getPrdOptionList(this);
+                    // };
+                    select.addEventListener('change', function(e){
+                        console.log('select1 addEventListener');
+                        this.getPrdOptionList(e);
+                    }.bind(this));
+                },
+                getPrdOptionList: function(evt){
+                    this.select2.innerHTML = '';
+                    console.log('getPrdOptionList()');
+                    console.log(evt);
+                    var idx = evt.target.options.selectedIndex;
+                    var val = this.select1.options[idx].value;
+                    console.log(val);
+                    var option = '';
+
+                    for(var i=0, len = data.length; i<len; i++){
+                        if (data[i].code == val) {
+                            for(var j=0, len2 = data[i].options.length; j<len2; j++){
+                                option = document.createElement('option');
+
+                                option.text = data[i].options[j].name;
+                                option.value = data[i].options[j].code;
+                                this.select2.add(option);    
+                            }
+                        }
+                    }
+                    this.select2.addEventListener('change', function(){
+                        this.choiceProduct();
+                    }.bind(this));
+                },
+                choiceProduct: function(){
+                    console.log('choiceProduct()');
+                }
+            };
+            PrdInfoController.init('Y');
+
+            var PrdDetailController = function() {
+                var getPrdList = function(){}
+            }
+        </script>
+    </body>
+</html>

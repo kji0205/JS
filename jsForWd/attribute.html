@@ -1,0 +1,38 @@
+<html>
+    <head></head>
+    <body>
+        <div id="myDiv" class="bd" title="Body text" lang="en" dir="ltr" my_special_attribute='hello!'>test div</div>
+        <script>
+            var div = document.getElementById('myDiv');
+            console.log(div.id);
+            console.log(div.className);
+            console.log(div.title);
+            console.log(div.lang);
+            console.log(div.dir);
+
+            // div.id = 'someOtherId';
+            // div.className = 'ft';
+            // div.title = 'Some other text';
+            // div.lang = 'fr';
+            // div.dir = 'rtl';
+
+            var value = div.getAttribute('my_special_attribute');
+            console.log(value);
+
+            function outputAttribute(element){
+                var pairs = [],
+                    attrName,
+                    attrValue,
+                    i,
+                    len;
+
+                for(var i = 0, length1 = element.attributes.length; i < length1; i++){
+                    attrName = element.attributes[i].nodeName;
+                    attrValue = element.attributes[i].nodeValue;
+                    pairs.push(attrName + "=\"" + attrValue + "\"");
+                }
+                return pairs.join(" ");
+            }
+        </script>
+    </body>
+</html>
