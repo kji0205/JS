@@ -1,5 +1,7 @@
-// Stack Class
-
+/*
+Stack Class
+선입후출(First In, Last Out: FILO)
+*/
 function Stack() {
     
     var items = [];

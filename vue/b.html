@@ -1,0 +1,36 @@
+<html>
+    <head></head>
+    <body>
+        <ul id="ul">
+            <li v-for="user in users">
+                {{ user.id }}
+                {{ user.name }}
+            </li>
+        </ul>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <script>
+            var root = 'https://jsonplaceholder.typicode.com';
+            var userData;
+            var group;
+
+            $.ajax({
+              url: root + '/users',
+              method: 'GET'
+            }).then(function(data) {
+              console.log(data);
+              userData = data;
+            }).always(function(){
+                new Vue({
+                    el: '#ul',
+                    data: {
+                        users: userData
+                    }
+                });
+            });
+
+            
+        </script>
+    </body>
+</html>
